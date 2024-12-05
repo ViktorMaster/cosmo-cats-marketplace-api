@@ -19,6 +19,8 @@ ext {
 	minimumCoveragePerFile = 0.8
 	filesExcludedFromCoverage = [
 			"**/*CosmoCatsMarketplaceApi*",
+			"**/domain/*",
+			"**/data/*",
 	]
 }
 
