@@ -24,6 +24,7 @@ ext {
 			"**/service/exception/*",
 			"**/web/dto/**",
 			"**/web/error/**",
+			"**/web/mapper/**",
 			"**/util/**",
 	]
 }
