@@ -21,7 +21,10 @@ ext {
 			"**/*CosmoCatsMarketplaceApi*",
 			"**/domain/*",
 			"**/data/*",
-			"**/service/exception/*"
+			"**/service/exception/*",
+			"**/web/dto/**",
+			"**/web/error/**",
+			"**/util/**",
 	]
 }
 
