@@ -36,7 +36,7 @@ jobs:
       - name: Grant execute permission for Gradlew
         run: chmod +x ./gradlew
 
-        # Run Gradle build and tests with coverage
+      # Run Gradle build and tests with coverage
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
       - name: Build with Gradle
@@ -45,7 +45,22 @@ jobs:
       # Upload the JaCoCo test coverage report
       - name: Upload coverage report
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: test-coverage-report
-          path: build/reports/coverage/index.html
+          path: build/reports/coverage
+
+  deploy:
+    name: Deploy coverage
+    if: always()
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
