@@ -4,6 +4,32 @@ info:
   description: API for managing products
   version: 1.0.0
 paths:
+  /api/v1/cosmo-cats:
+    get:
+      description: Retrieve a list of all cosmo cats
+      responses:
+        200:
+          description: A list of cosmo cats
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CosmoCatDto'
+
+  /api/v1/kitty-products:
+    get:
+      description: Retrieve a list of all kitty products
+      responses:
+        200:
+          description: A list of kitty products
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/KittyProductDto'
+
   /api/v1/products:
     get:
       summary: Retrieve a list of all products
@@ -147,9 +173,45 @@ paths:
 
 components:
   schemas:
+    CosmoCatDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Cosmo Cat Name"
+        breed:
+          type: string
+          example: "Cosmo Cat Breed"
+        price:
+          type: float
+          example: 99.99
+
+    KittyProductDto:
+      type: object
+      properties: 
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Kitty Product Name"
+        description:
+          type: string
+          example: "Kitty Product Description"
+        price:
+          type: number
+          format: float
+          example: 99.99
+    
     ProductDto:
       type: object
       properties:
+        id:
+          type: integer
+          example: 1
         name:
           type: string
           example: "Product Name"
