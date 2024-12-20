@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: cosmo-cats-marketplace-api
+
+springdoc:
+  api-docs:
+    path: /api-docs
+    enabled: true
+
+  swagger-ui:
+    path: /swagger-ui.html
+
+
+feature:
+  toggles:
+    cosmo-cats: true
+    kitty-products: false
