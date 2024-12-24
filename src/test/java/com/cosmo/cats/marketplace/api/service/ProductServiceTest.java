@@ -4,6 +4,7 @@ import com.cosmo.cats.marketplace.api.data.ProductRepository;
 import com.cosmo.cats.marketplace.api.domain.Product;
 import com.cosmo.cats.marketplace.api.service.exception.ProductAlreadyExistsException;
 import com.cosmo.cats.marketplace.api.service.exception.ProductNotFoundException;
+import com.cosmo.cats.marketplace.api.service.impl.ProductServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;

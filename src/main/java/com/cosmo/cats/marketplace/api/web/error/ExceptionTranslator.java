@@ -1,5 +1,6 @@
 package com.cosmo.cats.marketplace.api.web.error;
 
+import com.cosmo.cats.marketplace.api.featuretoggle.exception.FeatureNotEnabledException;
 import com.cosmo.cats.marketplace.api.service.exception.ProductAlreadyExistsException;
 import com.cosmo.cats.marketplace.api.service.exception.ProductNotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +37,14 @@ public class ExceptionTranslator extends ResponseEntityExceptionHandler {
                 ProblemDetail.forStatusAndDetail(BAD_REQUEST, ex.getMessage());
         problemDetail.setType(URI.create("this-name-exists"));
         problemDetail.setTitle("Duplicate name");
+        return problemDetail;
+    }
+
+    @ExceptionHandler(FeatureNotEnabledException.class)
+    public ProblemDetail handleFeatureToggleNotEnabledException(FeatureNotEnabledException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
+        problemDetail.setType(URI.create("feature-disabled"));
+        problemDetail.setTitle("Feature Is Disabled");
         return problemDetail;
     }
 

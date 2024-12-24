@@ -59,8 +59,20 @@ jobs:
     permissions:
       pages: write
       id-token: write
-    needs: build
+    needs: cleanup
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  cleanup:
+    runs-on: ubuntu-latest
+    permissions: write-all
+    needs: build
+    steps:
+      - name: 🗑 Delete deployment
+        uses: strumwolf/delete-deployment-environment@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          environment: github-pages
+          onlyRemoveDeployments: true

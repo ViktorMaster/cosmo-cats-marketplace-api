@@ -1,7 +1,8 @@
-package com.cosmo.cats.marketplace.api.service;
+package com.cosmo.cats.marketplace.api.service.impl;
 
 import com.cosmo.cats.marketplace.api.data.ProductRepository;
 import com.cosmo.cats.marketplace.api.domain.Product;
+import com.cosmo.cats.marketplace.api.service.ProductService;
 import com.cosmo.cats.marketplace.api.service.exception.ProductAlreadyExistsException;
 import com.cosmo.cats.marketplace.api.service.exception.ProductNotFoundException;
 import lombok.RequiredArgsConstructor;
