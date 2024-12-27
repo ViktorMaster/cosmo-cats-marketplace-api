@@ -4,15 +4,16 @@ import com.cosmo.cats.marketplace.api.domain.Product;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface ProductRepository {
-    Optional<Product> getById(Long id);
+    Optional<Product> getById(UUID id);
 
     List<Product> getAll();
 
-    Product update(Long id, Product updatedProduct);
+    Product update(UUID id, Product updatedProduct);
 
-    void delete(Long id);
+    void delete(UUID id);
 
     Product addProduct(Product product);
 }

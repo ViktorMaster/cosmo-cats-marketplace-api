@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +22,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product getProduct(Long id) {
+    public Product getProduct(UUID id) {
         return productRepository.getById(id).orElseThrow(() -> new ProductNotFoundException(id));
     }
 
@@ -34,7 +35,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product updateProduct(Long id, Product updatedProduct) {
+    public Product updateProduct(UUID id, Product updatedProduct) {
         if (!existById(id)) {
             return productRepository.addProduct(updatedProduct);
         }
@@ -47,7 +48,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void deleteProduct(Long id) {
+    public void deleteProduct(UUID id) {
         productRepository.delete(id);
     }
 
@@ -56,7 +57,7 @@ public class ProductServiceImpl implements ProductService {
                 .anyMatch(product -> product.getName().equals(productName));
     }
 
-    private boolean existById(Long productId) {
+    private boolean existById(UUID productId) {
         return productRepository.getAll().stream()
                 .anyMatch(product -> product.getId().equals(productId));
     }

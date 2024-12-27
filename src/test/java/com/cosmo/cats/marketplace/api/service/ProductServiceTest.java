@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.UUID;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,9 +20,7 @@ public class ProductServiceTest {
 
     ProductService productService = new ProductServiceImpl(productRepository);
 
-    private static Stream<Long> provideId() {
-        return Stream.of(0L, 1L, 2L);
-    }
+    private final UUID EXISTING_ID = productService.getProducts().get(1).getId();;
 
     @Test
     void shouldReturnAllProducts() {
@@ -30,16 +29,15 @@ public class ProductServiceTest {
         assertEquals(3, result.size());
     }
 
-    @ParameterizedTest
-    @MethodSource("provideId")
-    void shouldReturnProductById(Long id) {
-        var result = productService.getProduct(id);
+    @Test
+    void shouldReturnProductById() {
+        var result = productService.getProduct(EXISTING_ID);
         assertNotNull(result);
     }
 
     @Test
     void shouldThrowProductNotFoundExceptionWhenIdIsNonExistent() {
-        assertThrows(ProductNotFoundException.class, () -> productService.getProduct(4L));
+        assertThrows(ProductNotFoundException.class, () -> productService.getProduct(UUID.randomUUID()));
     }
 
     @Test
@@ -48,7 +46,7 @@ public class ProductServiceTest {
                 .name("New name")
                 .price(99.9)
                 .description("Description")
-                .categoryId(1L)
+                .categoryId(UUID.randomUUID())
                 .build();
 
         assertDoesNotThrow(() -> productService.createProduct(newProduct));
@@ -61,7 +59,7 @@ public class ProductServiceTest {
                         .name("Star Helmet")
                         .price(99.9)
                         .description("Description")
-                        .categoryId(1L)
+                        .categoryId(UUID.randomUUID())
                         .build())
         );
     }
@@ -69,43 +67,45 @@ public class ProductServiceTest {
     @Test
     void shouldUpdateProductSuccessfully() {
         var newProduct = Product.builder()
-                .id(1L)
+                .id(EXISTING_ID)
                 .name("New name")
                 .price(99.9)
                 .description("Description")
-                .categoryId(1L)
+                .categoryId(UUID.randomUUID())
                 .build();
-        assertNotEquals(newProduct, productService.getProduct(1L));
+        assertNotEquals(newProduct, productService.getProduct(EXISTING_ID));
         assertDoesNotThrow(() ->
-                productService.updateProduct(1L, newProduct)
+                productService.updateProduct(EXISTING_ID, newProduct)
         );
-        assertEquals(newProduct, productService.getProduct(1L));
+        assertEquals(newProduct, productService.getProduct(EXISTING_ID));
     }
 
     @Test
     void shouldUpdateProductWithNewIdWhenProductIdIsNonExistent() {
+        var id = UUID.randomUUID();
         var newProduct = Product.builder()
-                .id(4L)
                 .name("New name")
                 .price(99.9)
                 .description("Description")
-                .categoryId(1L)
+                .categoryId(UUID.randomUUID())
                 .build();
-        assertThrows(ProductNotFoundException.class, () -> productService.getProduct(4L));
+        var result = productService.getProducts();
+        assertEquals(3, result.size());
         assertDoesNotThrow(() ->
-                productService.updateProduct(4L, newProduct)
+                productService.updateProduct(id, newProduct)
         );
-        assertEquals(newProduct, productService.getProduct(4L));
+        result = productService.getProducts();
+        assertEquals(4, result.size());
     }
 
     @Test
     void shouldThrowDuplicateProductNameExceptionWhenUpdatingWithExistingName() {
         assertThrows(ProductAlreadyExistsException.class, () ->
-                productService.updateProduct(2L, Product.builder()
+                productService.updateProduct(EXISTING_ID, Product.builder()
                         .name("Star Helmet")
                         .price(99.9)
                         .description("Description")
-                        .categoryId(1L)
+                        .categoryId(UUID.randomUUID())
                         .build())
         );
     }

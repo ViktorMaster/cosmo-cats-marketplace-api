@@ -19,6 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -31,9 +32,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DisplayName("Product Controller Tests")
 public class ProductControllerIT {
-    private static final Long PRODUCT_ID = 0L;
-    private static final Long CATEGORY_ID = 1L;
-    private final List<ProductDto> productDtoList = buildProductListDto();
+    private static final UUID PRODUCT_ID = UUID.randomUUID();
+    private static final UUID CATEGORY_ID = UUID.randomUUID();
     private ProductDto productDto;
     private Product mockProduct;
 
@@ -75,7 +75,7 @@ public class ProductControllerIT {
                 .andExpect(jsonPath("$.name").value(productDto.getName()))
                 .andExpect(jsonPath("$.description").value(productDto.getDescription()))
                 .andExpect(jsonPath("$.price").value(productDto.getPrice()))
-                .andExpect(jsonPath("$.categoryId").value(productDto.getCategoryId()));
+                .andExpect(jsonPath("$.categoryId").value(productDto.getCategoryId().toString()));
     }
 
     @ParameterizedTest
@@ -100,7 +100,7 @@ public class ProductControllerIT {
                 .andExpect(jsonPath("$.name").value(productDto.getName()))
                 .andExpect(jsonPath("$.description").value(productDto.getDescription()))
                 .andExpect(jsonPath("$.price").value(productDto.getPrice()))
-                .andExpect(jsonPath("$.categoryId").value(productDto.getCategoryId()));
+                .andExpect(jsonPath("$.categoryId").value(productDto.getCategoryId().toString()));
     }
 
     @Test
@@ -114,13 +114,14 @@ public class ProductControllerIT {
 
     @Test
     void shouldGetAllProducts() throws Exception {
-        when(productService.getProducts()).thenReturn(buildProductList());
+        var dto = buildProductList();
+        when(productService.getProducts()).thenReturn(dto);
 
         mockMvc.perform(get("/api/v1/products")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(buildProductList())));
+                .andExpect(content().json(objectMapper.writeValueAsString(dto)));
     }
 
     @Test
@@ -148,7 +149,7 @@ public class ProductControllerIT {
                 .andExpect(jsonPath("$.name").value(updatedProductDto.getName()))
                 .andExpect(jsonPath("$.description").value(updatedProductDto.getDescription()))
                 .andExpect(jsonPath("$.price").value(updatedProductDto.getPrice()))
-                .andExpect(jsonPath("$.categoryId").value(CATEGORY_ID));
+                .andExpect(jsonPath("$.categoryId").value(CATEGORY_ID.toString()));
     }
 
     @ParameterizedTest
@@ -173,7 +174,7 @@ public class ProductControllerIT {
                 .andExpect(jsonPath("$.name").value(productDto.getName()))
                 .andExpect(jsonPath("$.description").value(productDto.getDescription()))
                 .andExpect(jsonPath("$.price").value(productDto.getPrice()))
-                .andExpect(jsonPath("$.categoryId").value(productDto.getCategoryId()));
+                .andExpect(jsonPath("$.categoryId").value(productDto.getCategoryId().toString()));
     }
 
     @Test
@@ -204,25 +205,25 @@ public class ProductControllerIT {
     private static List<ProductDto> buildProductListDto() {
         return List.of(
                 ProductDto.builder()
-                        .id(0L)
+                        .id(UUID.randomUUID())
                         .name("Star Helmet")
                         .description("A durable helmet for intergalactic travel.")
                         .price(17)
-                        .categoryId(1L)
+                        .categoryId(UUID.randomUUID())
                         .build(),
                 ProductDto.builder()
-                        .id(1L)
+                        .id(UUID.randomUUID())
                         .name("Anti-Gravity Boots")
                         .description("Experience weightlessness on any surface.")
                         .price(50.5)
-                        .categoryId(2L)
+                        .categoryId(UUID.randomUUID())
                         .build(),
                 ProductDto.builder()
-                        .id(2L)
+                        .id(UUID.randomUUID())
                         .name("Star Map")
                         .description("A holographic map of the known universe.")
                         .price(99.9)
-                        .categoryId(3L)
+                        .categoryId(UUID.randomUUID())
                         .build()
         );
     }

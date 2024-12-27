@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,14 +27,14 @@ public class ProductController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<ProductDto> getProduct(@PathVariable Long id) {
+  public ResponseEntity<ProductDto> getProduct(@PathVariable UUID id) {
     return ResponseEntity.ok(productDtoMapper.toProductDto(productService.getProduct(id)));
   }
 
   @PostMapping("/category/{categoryId}")
   public ResponseEntity<ProductDto> createProduct(
       @RequestBody @Valid ProductCreationDto productDto,
-      @PathVariable Long categoryId) {
+      @PathVariable UUID categoryId) {
     return new ResponseEntity<>(productDtoMapper.toProductDto(
         productService.createProduct(
                 productDtoMapper.toProduct(productDto)
@@ -43,14 +44,14 @@ public class ProductController {
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+  public ResponseEntity<Void> deleteProduct(@PathVariable UUID id) {
     productService.deleteProduct(id);
     return ResponseEntity.noContent().build();
   }
 
   @PutMapping("/{id}/category/{categoryId}")
   public ResponseEntity<ProductDto> updateProduct(
-      @PathVariable Long id, @PathVariable Long categoryId,
+      @PathVariable UUID id, @PathVariable UUID categoryId,
       @RequestBody @Valid ProductCreationDto productDto) {
     return ResponseEntity.ok(productDtoMapper.toProductDto(
         productService.updateProduct(id, productDtoMapper.toProduct(productDto)

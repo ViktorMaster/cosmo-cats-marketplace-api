@@ -3,12 +3,14 @@ package com.cosmo.cats.marketplace.api.web.dto.product;
 import lombok.Builder;
 import lombok.Value;
 
+import java.util.UUID;
+
 @Value
 @Builder
 public class ProductDto {
-    Long id;
+    UUID id;
     String name;
     String description;
     double price;
-    Long categoryId;
+    UUID categoryId;
 }
